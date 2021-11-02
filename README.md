@@ -1,17 +1,30 @@
-# stock-alert-bot
+# STOCK-ALERT-BOT
 
-## Usage:
-/get
-[STOCK_NAME] [COMPANY_NAME]
+## FUNCTIONS:
+It can help you get the following : 
+ - Stock News
+ - Stock Current Price
+ - Stock taget LOW/HIGH price
+ - Stock day LOW/HIGH
+ - Stock MarketCap
+ - Stock history
 
-## Working behind the scenes: 
-1. Get the command from Slack bot
-2. Get the stock name
-3. Get the stock details from the Alphavantage API
-4. Get the news from the newsapi
-5. Display the stop price with other details (change in value, news)
+## USAGE
+To get the Stock News : 
+/news stock_name
 
-## API used: 
-Stock Price Endpoint : "https://www.alphavantage.co/query"
+To get the target HIGH/LOW price
+/target stock_name
 
-News API Endpoint : "https://newsapi.org/v2/everything"
+To get the day HIGH/LOW
+/day stock_name
+
+To get the MarketCap
+/marketcap stock_name
+
+To get stock history
+/history stock_name
+
+To get the price for the last 5 mins
+/price stock_name
+"""
