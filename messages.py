@@ -27,4 +27,7 @@ To get stock history
 
 To get the price at Intervals over a period
 /price stock_name interval period
+
+To get a list of top performing stocks
+/list
 """
