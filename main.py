@@ -3,6 +3,7 @@ import yfinance as yf
 from yfinance import Ticker
 import telebot
 import messages
+import news, stock_list
 
 API_KEY = os.getenv('TELEGRAM_API_KEY')
 bot = telebot.TeleBot(API_KEY, parse_mode=None)
@@ -18,15 +19,22 @@ def get_stock_info_data(stock_name):
     return stock_info
 
 
-def get_stock_history_data(stock_name, st_period):
+def get_company_history_data(stock_name):
     stock_ticker: Ticker = get_stock_ticker(stock_name)
-    stock_history_data = stock_ticker.history(period=st_period)
-    return stock_history_data
+    stock_info = stock_ticker.info
+    company_history_data = stock_info["longBusinessSummary"]
+    return company_history_data
+
+
+def get_stock_company_name(stock_name):
+    stock_info_data  = get_stock_info_data(stock_name)
+    company_name = stock_info_data["longName"]
+    return company_name
 
 
 def get_stock_news_data(stock_name):
-    stock_ticker: Ticker = get_stock_ticker(stock_name)
-    stock_news_data = stock_ticker.news
+    company_name = get_stock_company_name(stock_name)
+    stock_news_data = news.get_news(stock_name.upper(), company_name)
     return stock_news_data
 
 
@@ -66,16 +74,28 @@ def get_st_marketcap(stock_name):
     return st_marketcap
 
 
+def get_stock_list():
+    st_list_msg = "Some famous Stocks are : \n"
+    for stock_name, company_name in stock_list.stock_list.items():
+        st_list_msg = st_list_msg + f"{stock_name} - {company_name} \n"
+    return  st_list_msg
+
+
 @bot.message_handler(commands=['news'])
 def handle_news(message):
     st_name = message.text.split()[1]
-    st_news = get_stock_news_data(stock_name=st_name)
-    bot.send_message(message.chat.id, st_news)
+    bot.send_chat_action(message.chat.id, "typing")
+    st_news_list = get_stock_news_data(stock_name=st_name)
+    news_to_send = ""
+    for st_news in st_news_list:
+      news_to_send += (st_news) + "\n"
+    bot.send_message(message.chat.id, news_to_send)
 
 
 @bot.message_handler(commands=['target'])
 def handle_target(message):
     st_name = message.text.split()[1]
+    bot.send_chat_action(message.chat.id, "typing")
     st_target_data = get_st_trgt_data(stock_name=st_name)
     print(st_target_data)
     bot.send_message(message.chat.id, st_target_data)
@@ -84,6 +104,7 @@ def handle_target(message):
 @bot.message_handler(commands=['day'])
 def handle_day(message):
     st_name = message.text.split()[1]
+    bot.send_chat_action(message.chat.id, "typing")
     st_day_data = get_st_day_data(stock_name=st_name)
     bot.send_message(message.chat.id, st_day_data)
 
@@ -91,25 +112,35 @@ def handle_day(message):
 @bot.message_handler(commands=['marketcap'])
 def handle_marketcap(message):
     st_name = message.text.split()[1]
+    bot.send_chat_action(message.chat.id, "typing")
     st_marketcap = get_st_marketcap(stock_name=st_name)
     bot.send_message(message.chat.id, st_marketcap)
 
 
-@bot.message_handler(commads=['history'])
+@bot.message_handler(commands=['history'])
 def handle_history(message):
     st_name = message.text.split()[1]
-    st_prd = message.text.split()[2]
-    st_history = get_stock_history_data(stock_name=st_name, st_period=st_prd)
+    bot.send_chat_action(message.chat.id, "typing")
+    st_history = get_company_history_data(stock_name=st_name)
     bot.send_message(message.chat.id, st_history)
 
 
+@bot.message_handler(commands=['list'])
+def list_stocks(message):
+    bot.send_chat_action(message.chat.id, "typing")
+    st_list = get_stock_list()
+    bot.send_message(message.chat.id, st_list)
+
+    
 @bot.message_handler(commands=['start'])
 def handle_start(message):
+    bot.send_chat_action(message.chat.id, "typing")
     bot.send_message(message.chat.id, messages.start_msg)
 
 
 @bot.message_handler(commands=['help'])
 def handle_help(message):
+    bot.send_chat_action(message.chat.id, "typing")
     bot.send_message(message.chat.id, messages.help_msg)
 
 
@@ -152,6 +183,7 @@ def stock_request(message):
 @bot.message_handler(commands=['price'])
 def handle_price(message):
     request = message.text.split()[1]
+    bot.send_chat_action(message.chat.id, "typing")
     data = yf.download(tickers=request, period='5m', interval='1m')
     if data.size > 0:
         data = data.reset_index()
@@ -161,6 +193,14 @@ def handle_price(message):
         bot.send_message(message.chat.id, data['Close'].to_string(header=False))
     else:
         bot.send_message(message.chat.id, "No data!?")
+
+
+@bot.message_handler()
+def handle_other(message):
+  msg = """ The Given Command is invalid
+  Please use /help to know the existing commands
+  """
+  bot.send_message(message.chat.id, msg)
 
 
 print("Bot Started")
