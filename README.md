@@ -34,3 +34,7 @@ To get the price for the last 5 mins
 
 /price stock_name
 
+To get a list of top performing stocks
+
+/list
+
