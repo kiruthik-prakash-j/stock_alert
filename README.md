@@ -9,6 +9,51 @@ It can help you get the following :
  - Stock MarketCap
  - Stock history
 
+
+## SETUP:
+
+### Cloning the Repo
+
+```
+ git clone https://github.com/kiruthik-prakash-j/stock_alert.git
+```
+
+### Creating the Bot
+
+- Create a bot using BOTFATHER
+- Save the BOTAPI in a notepad
+
+### Getting the NEWS API
+
+- Go to https://newsapi.org/
+- Select GET API Key
+- Sve the NEWS_API_KEY in a notepad
+
+### Setting up the environment variables
+
+- Open Commandline : 
+```
+ export TELEGRAM_API_KEY=<YOUR-TELEGRAM-API-KEY>
+ export NEWS_API_KEY=<YOUR-NEWS-API-KEY>
+```
+
+In case of Windows, open Powershell :
+```
+ set TELEGRAM_API_KEY=<YOUR-TELEGRAM-API-KEY>
+ set NEWS_API_KEY=<YOUR-NEWS-API-KEY>
+```
+
+### Installing the packages
+
+```
+pip install -r requirements.txt
+```
+
+### Run
+```
+python main.py
+```
+
 ## USAGE
 To get the Stock News : 
 
