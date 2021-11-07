@@ -25,8 +25,8 @@ To get the MarketCap
 To get stock history
 /history stock_name
 
-To get the price at Intervals over a period
-/price stock_name interval period
+To get the price at Intervals over a period of 5m
+/price stock_name
 
 To get a list of top performing stocks
 /list
