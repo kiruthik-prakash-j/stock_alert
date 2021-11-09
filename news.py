@@ -3,6 +3,10 @@ import requests
 
 
 def get_news(stock_name, company_name):
+    """Gets the stock name and company name
+    Using the news api gets the news data
+    Returns the top 3 news regarding the company as a string
+    """
     STOCK_NAME = stock_name
     COMPANY_NAME = company_name;
     NEWS_ENDPOINT = "https://newsapi.org/v2/everything"

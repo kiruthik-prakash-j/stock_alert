@@ -1,3 +1,5 @@
+from stock_list import stock_list
+
 start_msg = """
 Hi ! I am Stock Bot
 I can help you get the following : 
@@ -31,3 +33,16 @@ To get the price at Intervals over a period of 5m
 To get a list of top performing stocks
 /list
 """
+
+error_msg = """Command is incorrect !!
+  Please do refer /help for command Structuring
+  """
+
+
+def get_stock_list_msg():
+    """Converts the stock_list dictionary into strings
+    and returns the stock list message as a string"""
+    st_list_msg = "Some famous Stocks are : \n"
+    for stock_name, company_name in stock_list.items():
+        st_list_msg = st_list_msg + f"{stock_name} - {company_name} \n"
+    return st_list_msg
