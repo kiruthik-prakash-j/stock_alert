@@ -2,7 +2,6 @@ import yfinance as yf
 from yfinance import Ticker
 
 import news
-import stock_list
 
 PERIOD = '5m'
 INTERVAL = '1m'
@@ -57,7 +56,7 @@ class Stock:
         gets the target high, target low
         returns the stock target as a string
         """
-        info_data = self.get_info_data()
+        info_data = self.get_info()
         trgt_low = info_data["targetLowPrice"]
         trgt_high = info_data["targetHighPrice"]
         trgt_data = f"""Target Low : {trgt_low}
@@ -69,7 +68,7 @@ class Stock:
         """From the stock info dictionary,
         gets the day low, day high
         returns the stock day data as string"""
-        info_data = self.get_info_data()
+        info_data = self.get_info()
         day_low = info_data["dayLow"]
         day_high = info_data["dayHigh"]
         day_data = f"""Day Low : {day_low}
@@ -82,7 +81,7 @@ class Stock:
         gets the marketcap of the stock and
         returns the marketcap as string
         """
-        info_data = self.get_info_data()
+        info_data = self.get_info()
         marketcap = info_data["marketCap"]
         return marketcap
 
@@ -91,6 +90,6 @@ class Stock:
         gets the company name and
         returns the company name as a string
         """
-        info_data = self.get_info_data()
+        info_data = self.get_info()
         company_name = info_data["longName"]
         return company_name
